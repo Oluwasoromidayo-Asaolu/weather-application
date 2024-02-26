@@ -33,7 +33,7 @@ const Weather = () => {
             });
         if(response.ok){
             let data = await response.json();
-            console.log(data);
+            // console.log(data);
             setTime(`${data.hour}:${data.minute} ${data.hour > 12 ? 'PM' : 'AM'}`);
             setDay(`${data.day_of_week}`);
         }
