@@ -10,31 +10,42 @@ import windIcon from '../../images/wind.png';
 import humidityIcon from '../../images/humidity.png';
 
 const Weather = () => {
-    const apikey = process.env.REACT_APP_OPENWEATHERMAP_API_KEY;
+    const apiKey = process.env.REACT_APP_OPENWEATHERMAP_API_KEY;
+    const apiKey_2 = process.env.REACT_APP_APININJA_API_KEY;
     const [city, setCity] = useState('');
     const [temperature, setTemperature] = useState('');
     const [humidity, setHumidity] = useState('');
     const [wind, setWind] = useState('');
     const [feelsLike, setfeelsLike] = useState('');
     const [icon, setIcon] = useState('');
-    // const [time, setTime] = useState('');
-    const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=lagos&appid=${apikey}&units=metric`;
-    
-    async function checkWeather(city){
+    const [time, setTime] = useState('');
+    const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=tokyo&appid=${apiKey}&units=metric`;
+    const apiUrl_2 = `https://api.api-ninjas.com/v1/worldtime?city=tokyo`;
+
+
+
+    async function checkTime(){
+        const response = await fetch(apiUrl_2, {
+            method: 'GET',
+            headers: { 'X-Api-Key': apiKey_2},
+            contentType: 'application/json'
+            });
+        if(response.ok){
+            let data = await response.json();
+            console.log(data);
+            setTime(`${data.hour}:${data.minute} ${data.hour > 12 ? 'PM' : 'AM'}`);
+        }
+    }
+
+    async function checkWeather(){
         const response = await fetch(apiUrl);
         if(response.ok){
             let data = await response.json();
-            // const unixTimestamp = data.dt;
-            // const date = new Date(unixTimestamp * 1000);
-            // const hours = date.getHours();
-            // const minutes = date.getMinutes();
-            // const cityTime = `${hours}:${minutes}`;
             setCity(data.name);
             setTemperature(Math.round(data.main.temp));
             setHumidity(data.main.humidity);
             setWind(data.wind.speed);
             setfeelsLike(data.main.feels_like);
-            // setTime(cityTime);
             console.log(data);
             let weatherCondition =  data.weather[0].main;
             switch(weatherCondition){
@@ -66,11 +77,12 @@ const Weather = () => {
     }
 
     checkWeather();
+    checkTime();
 
     return(
         <div className="weather">
                 <div className="temp-city">
-                    <span className="cityName">{city} | 11:00 PM</span>
+                    <span className="cityName">{city} | {time}</span>
                     <span className="cityTemperature">{temperature}°C</span>
                     <span>Feels like {Math.round(feelsLike)}°C</span>
                 </div>
@@ -94,4 +106,5 @@ const Weather = () => {
         </div>
     )
 };
+
 export default Weather;
