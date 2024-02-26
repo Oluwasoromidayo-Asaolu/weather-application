@@ -8,7 +8,9 @@ import rain from '../../images/rain.png';
 import snow from '../../images/snow.png';
 import windIcon from '../../images/wind.png';
 import humidityIcon from '../../images/humidity.png';
+
 const Weather = () => {
+    const apikey = process.env.REACT_APP_OPENWEATHERMAP_API_KEY;
     const [city, setCity] = useState('');
     const [temperature, setTemperature] = useState('');
     const [humidity, setHumidity] = useState('');
@@ -16,7 +18,8 @@ const Weather = () => {
     const [feelsLike, setfeelsLike] = useState('');
     const [icon, setIcon] = useState('');
     // const [time, setTime] = useState('');
-    const apiUrl = 'https://api.openweathermap.org/data/2.5/weather?q=lagos&appid=7be832f4fae5858257ee1e83cef99a63&units=metric';
+    const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=lagos&appid=${apikey}&units=metric`;
+    
     async function checkWeather(city){
         const response = await fetch(apiUrl);
         if(response.ok){
@@ -53,13 +56,17 @@ const Weather = () => {
                 case 'Snow':
                     setIcon(snow);
                     break;
+                default:
+                    setIcon(clouds);
             }
         }
         else{
             alert('Invalid city name');
         }
     }
+
     checkWeather();
+
     return(
         <div className="weather">
                 <div className="temp-city">
