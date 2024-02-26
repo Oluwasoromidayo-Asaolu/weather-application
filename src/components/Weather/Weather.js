@@ -19,6 +19,7 @@ const Weather = () => {
     const [feelsLike, setfeelsLike] = useState('');
     const [icon, setIcon] = useState('');
     const [time, setTime] = useState('');
+    const [day, setDay] = useState('');
     const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=tokyo&appid=${apiKey}&units=metric`;
     const apiUrl_2 = `https://api.api-ninjas.com/v1/worldtime?city=tokyo`;
 
@@ -34,6 +35,10 @@ const Weather = () => {
             let data = await response.json();
             console.log(data);
             setTime(`${data.hour}:${data.minute} ${data.hour > 12 ? 'PM' : 'AM'}`);
+            setDay(`${data.day_of_week}`);
+        }
+        else{
+
         }
     }
 
@@ -82,7 +87,8 @@ const Weather = () => {
     return(
         <div className="weather">
                 <div className="temp-city">
-                    <span className="cityName">{city} | {time}</span>
+                    <span className="cityName">{city}</span>
+                    <span className="cityName">{day}, {time}</span>
                     <span className="cityTemperature">{temperature}°C</span>
                     <span>Feels like {Math.round(feelsLike)}°C</span>
                 </div>
