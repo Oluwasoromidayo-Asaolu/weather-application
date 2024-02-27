@@ -49,8 +49,8 @@ const Weather = () => {
             setCity(data.name);
             setTemperature(Math.round(data.main.temp));
             setHumidity(data.main.humidity);
-            setWind(data.wind.speed);
-            setfeelsLike(data.main.feels_like);
+            setWind(Math.round(data.wind.speed * (3600 / 1000)));
+            setfeelsLike(Math.round(data.main.feels_like));
             console.log(data);
             let weatherCondition =  data.weather[0].main;
             switch(weatherCondition){
@@ -90,7 +90,7 @@ const Weather = () => {
                     <span className="cityName">{city}</span>
                     <span className="cityName">{day}, {time}</span>
                     <span className="cityTemperature">{temperature}°C</span>
-                    <span>Feels like {Math.round(feelsLike)}°C</span>
+                    <span>Feels like {feelsLike}°C</span>
                 </div>
                 <img src={icon} alt="weather-icon" className="weatherIcon"></img>
                 <div className="weather-data">
@@ -104,7 +104,7 @@ const Weather = () => {
                     <div className="weather-data-row">
                         <img src={windIcon} alt="wind-icon"></img>
                         <div className="weather-data-inner-column">
-                            <span>{Math.round(wind * (3600 / 1000))}km/hr</span>
+                            <span>{wind}km/hr</span>
                             <span>Wind</span>
                         </div>
                     </div>
