@@ -9,7 +9,7 @@ import snow from '../../images/snow.png';
 import windIcon from '../../images/wind.png';
 import humidityIcon from '../../images/humidity.png';
 
-const Weather = () => {
+const Weather = ({inputText}) => {
     const apiKey = process.env.REACT_APP_OPENWEATHERMAP_API_KEY;
     const apiKey_2 = process.env.REACT_APP_APININJA_API_KEY;
     const [city, setCity] = useState('');
@@ -20,10 +20,8 @@ const Weather = () => {
     const [icon, setIcon] = useState('');
     const [time, setTime] = useState('');
     const [day, setDay] = useState('');
-    const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=tokyo&appid=${apiKey}&units=metric`;
-    const apiUrl_2 = `https://api.api-ninjas.com/v1/worldtime?city=tokyo`;
-
-
+    const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${inputText}&appid=${apiKey}&units=metric`;
+    const apiUrl_2 = `https://api.api-ninjas.com/v1/worldtime?city=${inputText}`;
 
     async function checkTime(){
         const response = await fetch(apiUrl_2, {
@@ -33,7 +31,6 @@ const Weather = () => {
             });
         if(response.ok){
             let data = await response.json();
-            // console.log(data);
             setTime(`${data.hour}:${data.minute} ${data.hour > 12 ? 'PM' : 'AM'}`);
             setDay(`${data.day_of_week}`);
         }
@@ -77,7 +74,6 @@ const Weather = () => {
             }
         }
         else{
-            alert('Invalid city name');
         }
     }
 
